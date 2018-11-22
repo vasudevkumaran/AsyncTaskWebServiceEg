@@ -7,6 +7,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
@@ -18,7 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class MainActivity extends AppCompatActivity implements WebServiceResultHandler{
+public class MainActivity extends AppCompatActivity implements WebServiceResultHandler, AdapterView.OnItemClickListener {
 
     private ArrayList<HashMap<String,String>> items = new ArrayList<HashMap<String, String>>();
     private ListView itemListView;
@@ -31,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements WebServiceResultH
         actionBar.setTitle("ShoppingList");
         actionBar.setSubtitle("Utility app to maintain your shopping items");
         itemListView = (ListView) findViewById(R.id.itemListView);
-
+        itemListView.setOnItemClickListener(this);
 
     }
 
@@ -44,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements WebServiceResultH
     private void loadAdapter(){
         SimpleAdapter adapter = new SimpleAdapter(this,items,
                 R.layout.item_cell,
-                new String[]{"item_name","item_qty","item_price"},
+                new String[]{Util.ITEM_NAME,Util.ITEM_QTY,Util.ITEM_PRICE},
                 new int[]{R.id.itemNameTV,R.id.itemQtyTV,R.id.itemPriceTV});
         itemListView.setAdapter(adapter);
     }
@@ -99,13 +101,25 @@ public class MainActivity extends AppCompatActivity implements WebServiceResultH
             JSONArray itemsJsonArray = jsonObject.getJSONArray("items");
             for (int i = 0; i < itemsJsonArray.length(); i++) {
                 HashMap<String,String> map = new HashMap<String, String>();
-                map.put("item_name",itemsJsonArray.getJSONObject(i).getString("item_name"));
-                map.put("item_qty",itemsJsonArray.getJSONObject(i).getString("item_qty"));
-                map.put("item_price",itemsJsonArray.getJSONObject(i).getString("item_price"));
+                map.put(Util.ITEM_NAME,itemsJsonArray.getJSONObject(i).getString("item_name"));
+                map.put(Util.ITEM_QTY,itemsJsonArray.getJSONObject(i).getString("item_qty"));
+                map.put(Util.ITEM_PRICE,itemsJsonArray.getJSONObject(i).getString("item_price"));
+                map.put(Util.ITEM_ID,itemsJsonArray.getJSONObject(i).getString("item_id"));
                 items.add(map);
             }
         }
         loadAdapter();
 
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        HashMap<String,String> item = items.get(position);
+        Intent intent = new Intent(this,AddEditActivity.class);
+        intent.putExtra(Util.ITEM_ID,item.get(Util.ITEM_ID));
+        intent.putExtra(Util.ITEM_NAME,item.get(Util.ITEM_NAME));
+        intent.putExtra(Util.ITEM_QTY,item.get(Util.ITEM_QTY));
+        intent.putExtra(Util.ITEM_PRICE,item.get(Util.ITEM_PRICE));
+        startActivity(intent);
     }
 }
