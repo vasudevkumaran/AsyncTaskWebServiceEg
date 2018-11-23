@@ -11,10 +11,13 @@ public class Util {
     public static final String USER_NAME = "username";
     public static final String PASSWORD = "password";
     public static final int NOT_LOGGED_IN = -1;
+    public static final int OTHER = 1;
+    public static final int DELETE = 2;
     public static final String ITEM_NAME = "item_name";
     public static final String ITEM_QTY = "item_qty";
     public static final String ITEM_PRICE = "item_price";
     public static final String ITEM_ID = "item_id";
+
 
     public static void showText(Context context, String message){
         Toast.makeText(context,message,Toast.LENGTH_LONG).show();

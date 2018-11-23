@@ -23,9 +23,11 @@ public class ConnectWebService extends AsyncTask<String,Void,String> {
     private String mPayload;
     private WebServiceResultHandler mWebServiceResultHandler;
     private ProgressDialog progressDialog;
-    public ConnectWebService(Activity activity, String payload){
+    private int mWho = -1;
+    public ConnectWebService(Activity activity, String payload, int who){
         mPayload = payload;
         progressDialog = ProgressDialog.show(activity,"Wait","Connecting..");
+        mWho = who;
         if (activity instanceof WebServiceResultHandler) {
             mWebServiceResultHandler = (WebServiceResultHandler)activity;
         }
@@ -82,7 +84,7 @@ public class ConnectWebService extends AsyncTask<String,Void,String> {
         super.onPostExecute(result);
         Log.w("WSRESPONSE",result);
         try {
-            mWebServiceResultHandler.onReceiveResult(result);
+            mWebServiceResultHandler.onReceiveResult(mWho,result);
         } catch (JSONException e) {
             e.printStackTrace();
         }

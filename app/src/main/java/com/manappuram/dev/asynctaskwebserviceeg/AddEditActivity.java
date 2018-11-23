@@ -63,12 +63,12 @@ public class AddEditActivity extends AppCompatActivity implements WebServiceResu
                 //edit
                 builder.appendQueryParameter("itemid",itemId);
                 String payload = builder.build().getEncodedQuery();
-                ConnectWebService connectWebService = new ConnectWebService(this,payload);
+                ConnectWebService connectWebService = new ConnectWebService(this,payload,Util.OTHER);
                 connectWebService.execute("http://vasudevkumaran.com/app/updateitem");
             }else{
                 //add
                 String payload = builder.build().getEncodedQuery();
-                ConnectWebService connectWebService = new ConnectWebService(this,payload);
+                ConnectWebService connectWebService = new ConnectWebService(this,payload,Util.OTHER);
                 connectWebService.execute("http://vasudevkumaran.com/app/additem");
             }
 
@@ -82,7 +82,7 @@ public class AddEditActivity extends AppCompatActivity implements WebServiceResu
     }
 
     @Override
-    public void onReceiveResult(String result) throws JSONException {
+    public void onReceiveResult(int who, String result) throws JSONException {
         JSONObject jsonObject = new JSONObject(result);
         if (jsonObject.getString("result").equals("OK")){
             if (itemId.equals("-1")) {

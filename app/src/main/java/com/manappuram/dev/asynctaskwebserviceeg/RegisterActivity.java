@@ -86,7 +86,7 @@ public class RegisterActivity extends AppCompatActivity implements WebServiceRes
                     builder.appendQueryParameter("is_holidays","2");
                 }
                 String payload = builder.build().getEncodedQuery();
-                ConnectWebService connectWebService = new ConnectWebService(this,payload);
+                ConnectWebService connectWebService = new ConnectWebService(this,payload,Util.OTHER);
                 connectWebService.execute("http://vasudevkumaran.com/app/registration");
                 break;
         }
@@ -94,7 +94,7 @@ public class RegisterActivity extends AppCompatActivity implements WebServiceRes
     }
 
     @Override
-    public void onReceiveResult(String result) throws JSONException {
+    public void onReceiveResult(int who, String result) throws JSONException {
         JSONObject jsonObject = new JSONObject(result);
         if (jsonObject.getString("result").equals("OK")){
             Util.showText(this,jsonObject.getString("message"));

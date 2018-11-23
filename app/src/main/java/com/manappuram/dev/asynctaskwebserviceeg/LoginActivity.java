@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity implements WebServiceResult
         builder.appendQueryParameter("username",userNameEd.getText().toString());
         builder.appendQueryParameter("password",passEd.getText().toString());
         String payload = builder.build().getEncodedQuery();
-        ConnectWebService connectWebService = new ConnectWebService(this,payload);
+        ConnectWebService connectWebService = new ConnectWebService(this,payload,Util.OTHER);
         connectWebService.execute("http://vasudevkumaran.com/app/login");
     }
 
@@ -64,7 +64,7 @@ public class LoginActivity extends AppCompatActivity implements WebServiceResult
     }
 
     @Override
-    public void onReceiveResult(String result) throws JSONException {
+    public void onReceiveResult(int who, String result) throws JSONException {
         JSONObject jsonObject = new JSONObject(result);
         if (jsonObject.getString("result").equals("OK")){
             Util.showText(this,"Logged in Successfully");
