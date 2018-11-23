@@ -1,5 +1,6 @@
 package com.manappuram.dev.asynctaskwebserviceeg;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -90,6 +91,9 @@ public class AddEditActivity extends AppCompatActivity implements WebServiceResu
             }else{
                 Util.showText(this, "Item Edited Successfully");
             }
+            Intent intent = new Intent();
+            intent.putExtra(Util.ITEM_ID,itemId);
+            setResult(Util.RES_CODE,intent);
             finish();
         }else{
             Util.showText(this,"Item Could not be added or already existing");

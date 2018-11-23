@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -37,14 +38,10 @@ public class MainActivity extends AppCompatActivity implements WebServiceResultH
         itemListView = (ListView) findViewById(R.id.itemListView);
         itemListView.setOnItemClickListener(this);
         itemListView.setOnItemLongClickListener(this);
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         loadAllItems();
     }
+
+
 
     private void loadAdapter(){
         SimpleAdapter adapter = new SimpleAdapter(this,items,
@@ -73,12 +70,14 @@ public class MainActivity extends AppCompatActivity implements WebServiceResultH
 
         switch (item.getItemId()){
             case R.id.action_profile:
-
+                Intent regIntent = new Intent(this,RegisterActivity.class);
+                regIntent.putExtra(Util.TYPE,Util.UPDATE);
+                startActivity(regIntent);
                 break;
 
             case R.id.action_add:
                 Intent intentAdd = new Intent(this,AddEditActivity.class);
-                startActivity(intentAdd);
+                startActivityForResult(intentAdd,Util.REQ_CODE);
                 break;
 
             case R.id.action_logout:
@@ -128,7 +127,22 @@ public class MainActivity extends AppCompatActivity implements WebServiceResultH
         intent.putExtra(Util.ITEM_NAME,item.get(Util.ITEM_NAME));
         intent.putExtra(Util.ITEM_QTY,item.get(Util.ITEM_QTY));
         intent.putExtra(Util.ITEM_PRICE,item.get(Util.ITEM_PRICE));
-        startActivity(intent);
+        startActivityForResult(intent,Util.REQ_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,  Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //Util.showText(this,"Add Edit Activity closed");
+        if (requestCode == Util.REQ_CODE){
+            if (resultCode == Util.RES_CODE){
+                //Bundle bundle = data.getExtras();
+                //String itemId = bundle.getString(Util.ITEM_ID);
+                loadAllItems();
+            }
+        }
+
+
     }
 
     @Override

@@ -56,6 +56,7 @@ public class LoginActivity extends AppCompatActivity implements WebServiceResult
         switch (item.getItemId()){
             case R.id.action_register:
                 Intent intent = new Intent(this,RegisterActivity.class);
+                intent.putExtra(Util.TYPE,Util.REGISTER);
                 startActivity(intent);
                 break;
         }
@@ -73,6 +74,12 @@ public class LoginActivity extends AppCompatActivity implements WebServiceResult
             Util.saveInt(this,Util.USER_ID,userObject.getInt("user_id"));
             Util.saveString(this,Util.USER_NAME,userObject.getString("user_name"));
             Util.saveString(this,Util.PASSWORD,userObject.getString("user_password"));
+            Util.saveString(this,Util.USER_FULL_NAME,userObject.getString("user_full_name"));
+            Util.saveString(this,Util.USER_LAST_NAME,userObject.getString("user_last_name"));
+            Util.saveString(this,Util.USER_GENDER,userObject.getString("user_gender"));
+            Util.saveString(this,Util.IS_TRAVEL,userObject.getString("is_travel"));
+            Util.saveString(this,Util.IS_BUSINESS,userObject.getString("is_business"));
+            Util.saveString(this,Util.IS_HOLIDAYS,userObject.getString("is_holidays"));
             Intent intent = new Intent(this,MainActivity.class);
             startActivity(intent);
             finish();
